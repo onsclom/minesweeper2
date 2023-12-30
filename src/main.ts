@@ -12,7 +12,7 @@ update();
 function update() {
   if ([...bombs.keys()].some((bomb) => revealed.has(bomb)))
     alert("You lost!"), location.reload();
-  if (revealed.size === WIDTH * HEIGHT - MINES)
+  else if (revealed.size === WIDTH * HEIGHT - MINES)
     alert("You won!"), location.reload();
   grid.innerHTML = "";
   for (let i = 0; i < WIDTH * HEIGHT; i++) {
