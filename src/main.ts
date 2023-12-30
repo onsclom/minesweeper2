@@ -35,6 +35,7 @@ function update() {
     grid.appendChild(cell);
     if (flags.has(i)) cell.innerText = "🚩";
     if (revealed.has(i)) {
+      cell.style.backgroundColor = "lightgray";
       const count = bombCount(i);
       if (count > 0) cell.innerText = count.toString();
     }
