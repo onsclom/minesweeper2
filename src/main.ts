@@ -1,16 +1,12 @@
-const WIDTH = 9;
-const HEIGHT = 9;
+const [WIDTH, HEIGHT] = [9, 9];
 const MINES = 10;
-const CELL_SIZE = 32;
 
-const revealed = new Set<number>();
-const flags = new Set<number>();
-const bombs = new Set<number>();
+const [revealed, flags, bombs] = [...Array(3)].map(() => new Set<number>());
 while (bombs.size < MINES)
   bombs.add(Math.floor(Math.random() * WIDTH * HEIGHT));
 
 const grid = document.getElementById("game") as HTMLDivElement;
-grid.style.gridTemplateColumns = `repeat(${WIDTH}, ${CELL_SIZE}px)`;
+grid.style.gridTemplateColumns = `repeat(${WIDTH}, ${32}px)`;
 update();
 
 function update() {
@@ -39,12 +35,12 @@ function update() {
       const count = bombCount(i);
       if (count > 0) cell.innerText = count.toString();
     }
+    cell.style.cursor = revealed.has(i) ? "default" : "pointer";
   }
 }
 
-function bombCount(cell: number) {
-  const { x, y } = { x: cell % WIDTH, y: Math.floor(cell / WIDTH) };
-  let count = 0;
+function bombCount(cell: number, count = 0) {
+  const [x, y] = [cell % WIDTH, Math.floor(cell / WIDTH)];
   for (let y2 = y - 1; y2 <= y + 1; y2++)
     for (let x2 = x - 1; x2 <= x + 1; x2++) {
       const inBounds = x2 >= 0 && x2 < WIDTH && y2 >= 0 && y2 < HEIGHT;
@@ -54,7 +50,7 @@ function bombCount(cell: number) {
 }
 
 function floodFill(cell: number) {
-  const { x, y } = { x: cell % WIDTH, y: Math.floor(cell / WIDTH) };
+  const [x, y] = [cell % WIDTH, Math.floor(cell / WIDTH)];
   for (let y2 = y - 1; y2 <= y + 1; y2++)
     for (let x2 = x - 1; x2 <= x + 1; x2++) {
       const inBounds = x2 >= 0 && x2 < WIDTH && y2 >= 0 && y2 < HEIGHT;
